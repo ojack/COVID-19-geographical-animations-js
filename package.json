@@ -1,0 +1,38 @@
+{
+  "name": "covid-19-geographical-animations",
+  "version": "1.0.0",
+  "description": "web version of https://github.com/hsayama/COVID-19-geographical-animations by hiroki sayama",
+  "main": "index.js",
+  "scripts": {
+    "dev": "budo index.js:bundle.js --open --live --dir src",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && npm run build:html && npm run build:js",
+    "clean": "rimraf public & rimraf src/bundle.js",
+    "build:html": "cp -r src public",
+    "js:minify": "terser src/bundle.js --source-map \"content=inline\" -o public/bundle.min.js",
+    "html:replace": "replace-in-files --string='bundle.js' --replacement=\"bundle.min.js?$npm_package_version\" public/index.html",
+    "build:js": "browserify index.js --debug -o src/bundle.js && npm run js:minify && npm run html:replace"
+  },
+  "author": "ojack",
+  "license": "ISC",
+  "dependencies": {
+    "choo": "^7.1.0",
+    "choo-devtools": "^3.0.4",
+    "csv-parse": "^4.14.1",
+    "d3": "^6.2.0",
+    "insert-css": "^2.0.0",
+    "install": "^0.13.0",
+    "mapbox-gl": "^1.12.0",
+    "npm": "^6.14.8",
+    "plotly.js-basic-dist-min": "^1.57.1",
+    "plotly.js-dist": "^1.57.1",
+    "resl": "^1.0.3"
+  },
+  "devDependencies": {
+    "budo": "^11.6.4",
+    "replace-in-files": "^3.0.0",
+    "replace-in-files-cli": "^1.0.0",
+    "rimraf": "^3.0.2",
+    "terser": "^5.5.0"
+  }
+}
