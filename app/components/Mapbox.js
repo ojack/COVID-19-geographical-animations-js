@@ -17,13 +17,14 @@ module.exports = class Mapbox extends Component {
 
   loadPoints(data) {
     console.log('loading points')
-    const features = Object.values(data).map((feature) => {
+    const features = Object.values(data).map((feature, index) => {
       return {
         'type': 'Feature',
         'geometry': {
           'type': 'Point',
           'coordinates': feature.coords,
         },
+        'id': index,
         'properties': {}
       //  'properties': feature
       }
@@ -43,7 +44,12 @@ module.exports = class Mapbox extends Component {
     this.map.addLayer({
       'id': 'points',
       'type': 'circle',
-      'source': 'points'
+      'source': 'points',
+      'paint': {
+        'circle-color': '#f00',
+        'circle-opacity': 0.7,
+        'circle-radius': 6
+      }
     })
   //   this.polygons = polygons
   //   this.map.addSource('polygons', {
@@ -138,7 +144,7 @@ module.exports = class Mapbox extends Component {
 
   }
 
-  update ({ data }) {
+  update ({ data, fill = '#0f0' }) {
     if(data !== null) {
       this.data = data
       if(this.styleLoaded && !this.pointsLoaded) {
@@ -150,7 +156,7 @@ module.exports = class Mapbox extends Component {
   //     if(polygons !== null && this.styleLoaded) this.loadPolygons(polygons)
   //   }
   // // setPaintProperty can only be called if something has been loaded to the map (either a style or a polygon layer)
-  //   if(this.polygonsLoaded) this.map.setPaintProperty('polygon-fills', 'fill-color', fill)
+    if(this.pointsLoaded) this.map.setPaintProperty('points', 'circle-color', fill)
     return false
   }
 
