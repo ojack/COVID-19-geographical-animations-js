@@ -30,7 +30,10 @@ module.exports = (data) => {
     }
     regions[key] = countryObj
   })
-  return regions
+  return {
+    dataByRegion: regions,
+    dates: header.slice(timeseriesStart)
+  }
 }
 
 function dailyNewCases(totalCases) {
