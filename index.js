@@ -14,7 +14,11 @@ app.mount('body')
 function mainView (state, emit) {
   return html`<body class="w-100 h-100 flex flex-column georgia">
       ${timeline(state, emit)}
-    ${state.cache(Mapbox, `test-map`).render(state)}
+    ${state.cache(Mapbox, `test-map`).render({
+      data: state.data,
+      fill: state.map.fill,
+      radius: state.map.radius
+}, emit)}
 
   </body>`
 }

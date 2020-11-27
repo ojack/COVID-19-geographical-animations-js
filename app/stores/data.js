@@ -2,7 +2,9 @@ const load = require('resl')
 const csv = require('./../lib/process-csv.js')
 const src = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
 
-const updateInterval = 200
+const d3 = require('d3')
+
+const updateInterval = 300
 module.exports = (state, emitter) => {
   state.data = null
 
@@ -15,6 +17,11 @@ module.exports = (state, emitter) => {
     timeline: {
       isPlaying: true
     }
+  }
+
+  state.map = {
+    fill: '#f0f',
+    radius: 1
   }
 
   load({
@@ -51,6 +58,12 @@ emitter.on('startPlaying', () => {
   emitter.emit('render')
 })
 
+emitter.on('dataset:setDate', (dateIndex) => {
+    state.dataset.dateIndex = dateIndex
+    setMapData()
+    emitter.emit('render')
+  })
+
 let timer
 
 function stopPlaying() {
@@ -69,11 +82,34 @@ function incrementDate() {
   if(state.ui.timeline.isPlaying) {
     if(state.dataset.dateIndex < state.dataset.dates.length - 1) {
       state.dataset.dateIndex++
-    //  setMapData()
+      setMapData()
     } else {
       stopPlaying()
     }
   }
   emitter.emit('render')
 }
+
+const colorScale = d3.scaleSequential([1, 0], d3.interpolateRdYlBu)
+const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
+  function setMapData() {
+    var fillExpression = ['match', ['get', 'id']]
+    var radiusExpression = ['match', ['get', 'id']]
+    Object.values(state.data).forEach((entry, index) => {
+      const max = entry.maxnewcases[state.dataset.dateIndex]
+      const newCases = entry.newcases[state.dataset.dateIndex]
+      const val = max == 0 ? 0 : newCases/max
+      const color = colorScale(val)
+      const radius = radiusScale(newCases)
+    //  console.log(val, color)
+      fillExpression.push(index, color)
+      radiusExpression.push(index, radius)
+    })
+
+      fillExpression.push(`rgba(0, 255, 0, 1)`)
+      radiusExpression.push(0)
+      state.map.fill = fillExpression
+      state.map.radius = radiusExpression
+  }
+
 }

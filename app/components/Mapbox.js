@@ -25,7 +25,9 @@ module.exports = class Mapbox extends Component {
           'coordinates': feature.coords,
         },
         'id': index,
-        'properties': {}
+        'properties': {
+          id: index
+        }
       //  'properties': feature
       }
     })
@@ -144,7 +146,7 @@ module.exports = class Mapbox extends Component {
 
   }
 
-  update ({ data, fill = '#0f0' }) {
+  update ({ data, fill = '#0f0', radius = 0}) {
     if(data !== null) {
       this.data = data
       if(this.styleLoaded && !this.pointsLoaded) {
@@ -156,7 +158,10 @@ module.exports = class Mapbox extends Component {
   //     if(polygons !== null && this.styleLoaded) this.loadPolygons(polygons)
   //   }
   // // setPaintProperty can only be called if something has been loaded to the map (either a style or a polygon layer)
-    if(this.pointsLoaded) this.map.setPaintProperty('points', 'circle-color', fill)
+    if(this.pointsLoaded) {
+      this.map.setPaintProperty('points', 'circle-color', fill)
+      this.map.setPaintProperty('points', 'circle-radius', radius)
+    }
     return false
   }
 

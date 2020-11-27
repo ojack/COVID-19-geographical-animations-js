@@ -17,7 +17,8 @@ module.exports = (data) => {
     const state = row[stateIndex]
     const key = `${country}${state.length > 0? `-${state}`: ''}`
     const totalcases = row.slice(timeseriesStart).map((val) => parseFloat(val))
-    const newcases = dailyNewCases(totalcases)
+    const newcasesraw = dailyNewCases(totalcases)
+    const newcases = rollingAverage(newcasesraw)
     const maxnewcases = maxNewCases(newcases)
     const countryObj = {
       country,
@@ -40,6 +41,17 @@ function dailyNewCases(totalCases) {
   return totalCases.map((dailyValue, index) => {
     if(index === 0) return 0
     return dailyValue - totalCases[index - 1]
+  })
+}
+
+function rollingAverage(newArray) {
+  return newArray.map((newCases, index) => {
+    if(index < 7) return newCases
+ //[1, 2, 3, 4].reduce((a, b) => a + b, 0)
+    const sevenDays = newArray.slice(index - 7, index)
+    const sum = sevenDays.reduce((a, b) => a + b, 0)
+  //  console.log(sevenDays, sum)
+    return sum/7
   })
 }
 
