@@ -66,8 +66,8 @@ module.exports = class Mapbox extends Component {
       style: 'mapbox://styles/mapbox/light-v10',
       // style: 'https://maputnik.github.io/osm-liberty/style.json',
       // style: 'https://openmaptiles.github.io/klokantech-basic-gl-style/style-cdn.json',
-      center: [0, 10],
-      zoom: 1.5
+      center: [0, 0],
+      zoom: 1.1
     });
 
 
