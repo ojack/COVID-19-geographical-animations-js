@@ -1,10 +1,11 @@
 const load = require('resl')
 const csv = require('./../lib/process-csv.js')
 const src = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+const html = require('choo/html')
 
 const d3 = require('d3')
 
-const updateInterval = 300
+const updateInterval = 200
 module.exports = (state, emitter) => {
   state.data = null
 
@@ -16,6 +17,11 @@ module.exports = (state, emitter) => {
   state.ui = {
     timeline: {
       isPlaying: true
+    },
+    tooltip: {
+      content: null,
+      data: null,
+      point: [0, 0]
     }
   }
 
@@ -110,6 +116,52 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
       radiusExpression.push(0)
       state.map.fill = fillExpression
       state.map.radius = radiusExpression
+      const _d = state.ui.tooltip.data
+    if(_d !== null) {
+      setTooltip(_d)
+
+    }
   }
 
+  emitter.on('ui:clearTooltip', () => {
+      state.ui.tooltip.content = null
+      state.ui.tooltip.data = null
+      emitter.emit('render')
+    })
+
+    emitter.on('ui:setTooltip', (data, point) => {
+      setTooltip(data)
+      // const d = state.data[data.properties[state.dataset.geoKey]]
+      //  console.log(state.dataset.geoKey, d)
+      // state.ui.tooltip.content = `${d.name}: ${getCurrentData(d)}`
+      // = data
+      state.ui.tooltip.point = point
+      // if(data !== null) {
+      //   emitter.emit('ui:setPanel', data)
+      // }
+      emitter.emit('render')
+    })
+
+    function setTooltip(data) {
+    if(state.data !== null) {
+
+      const key = Object.keys(state.data)[data.id]
+      console.log(data.id, key)
+      const d = state.data[key]
+      state.ui.tooltip.content = html`
+      <div class="f7">
+        <div>${key}</div>
+        <div>new cases: ${Math.round(d.newcases[state.dataset.dateIndex])}</div>
+        <div>total cases: ${d.totalcases[state.dataset.dateIndex]}</div>
+      </div>
+      `
+      state.ui.tooltip.data = data
+      //
+      // // const index = state.dataset.geoKey === null ? 0 : data.properties[state.dataset.geoKey]
+      // const d = state.data[data.properties[state.dataset.geoKey]]
+      // //const d = state.data[data.properties['nuts3']]
+      // state.ui.tooltip.content = `${d.name}: ${getCurrentData(d)}`
+      // state.ui.tooltip.data = data
+    }
+  }
 }

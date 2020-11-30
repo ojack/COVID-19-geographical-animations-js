@@ -44,7 +44,7 @@ module.exports = class Mapbox extends Component {
     })
 
     this.map.addLayer({
-      'id': 'points',
+      'id': 'point-fills',
       'type': 'circle',
       'source': 'points',
       'paint': {
@@ -53,34 +53,7 @@ module.exports = class Mapbox extends Component {
         'circle-radius': 6
       }
     })
-  //   this.polygons = polygons
-  //   this.map.addSource('polygons', {
-  //     type: 'geojson',
-  //     data: this.polygons
-  //   })
-  //
-  //   this.map.addLayer({
-  //     'id': 'polygon-fills',
-  //     'type': 'fill',
-  //     'source': 'polygons',
-  //     'paint': {
-  //       'fill-color': '#000',
-  //       'fill-opacity': [ 'case', ['boolean', ['feature-state', 'hover'], false], 0.5, 1 ]
-  //     }
-  //   })
-  //
-  // //  this.loadBaseStyle()
-  //   // map.addLayer({
-  //   //   'id': 'polygon-borders',
-  //   //   'type': 'line',
-  //   //   'source': 'polygons',
-  //   //   'layout': {},
-  //   //   'paint': {
-  //   //   'line-color': '#627BC1',
-  //   //   'line-width': 2
-  //   //   }
-  //   // });
-  //   //})
+
        this.pointsLoaded = true
   }
 
@@ -89,9 +62,12 @@ module.exports = class Mapbox extends Component {
     var map = new mapboxgl.Map({
       container: el,
       //  style: 'white-bg',
+      attributionControl: false,
       style: 'mapbox://styles/mapbox/light-v10',
-      // center: [9.00, 51.00],
-      zoom: 1
+      // style: 'https://maputnik.github.io/osm-liberty/style.json',
+      // style: 'https://openmaptiles.github.io/klokantech-basic-gl-style/style-cdn.json',
+      center: [0, 10],
+      zoom: 1.5
     });
 
 
@@ -104,43 +80,43 @@ module.exports = class Mapbox extends Component {
     this.emit('render')
   })
 //
-//     let hoverId = null
+    let hoverId = null
 //
 //     map.on('mousedown', 'polygon-fills', (e) => {
 //       //  console.log(e.features)
 //       if(e.features.length > 0) this.emit('ui:setPanel', e.features[0])
 //     })
 //
-//     map.on('mousemove', 'polygon-fills', (e) => {
-//       //  console.log(e, e.features[0])
-//       if (hoverId) {
-//         map.setFeatureState(
-//           { source: 'polygons', id: hoverId },
-//           { hover: false }
-//         );
-//       }
-//       if(e.features.length > 0) {
-//         hoverId = e.features[0].id
-//         map.setFeatureState(
-//           { source: 'polygons', id: hoverId },
-//           { hover: true }
-//         );
-//         //console.log(e.features[0])
-//         this.emit('ui:setTooltip', e.features[0], e.point)
-//       }
-//     })
-//
-//     map.on('mouseleave', 'polygon-fills', (e) => {
-//       //   console.log(e)
-//       if (hoverId) {
-//         map.setFeatureState(
-//           { source: 'polygons', id: hoverId },
-//           { hover: false }
-//         );
-//       }
-//       hoverId = false
-//       this.emit('ui:clearTooltip', null, e.point)
-//     })
+    map.on('mousemove', 'point-fills', (e) => {
+      //  console.log(e, e.features[0])
+      if (hoverId) {
+        map.setFeatureState(
+          { source: 'points', id: hoverId },
+          { hover: false }
+        );
+      }
+      if(e.features.length > 0) {
+        hoverId = e.features[0].id
+        map.setFeatureState(
+          { source: 'points', id: hoverId },
+          { hover: true }
+        );
+        //console.log(e.features[0])
+        this.emit('ui:setTooltip', e.features[0], e.point)
+      }
+    })
+
+    map.on('mouseleave', 'point-fills', (e) => {
+      //   console.log(e)
+      if (hoverId) {
+        map.setFeatureState(
+          { source: 'points', id: hoverId },
+          { hover: false }
+        );
+      }
+      hoverId = false
+      this.emit('ui:clearTooltip', null, e.point)
+    })
 //
 //     this.map = map
 
@@ -159,8 +135,8 @@ module.exports = class Mapbox extends Component {
   //   }
   // // setPaintProperty can only be called if something has been loaded to the map (either a style or a polygon layer)
     if(this.pointsLoaded) {
-      this.map.setPaintProperty('points', 'circle-color', fill)
-      this.map.setPaintProperty('points', 'circle-radius', radius)
+      this.map.setPaintProperty('point-fills', 'circle-color', fill)
+      this.map.setPaintProperty('point-fills', 'circle-radius', radius)
     }
     return false
   }
