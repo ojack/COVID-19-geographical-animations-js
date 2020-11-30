@@ -11,7 +11,7 @@ const app = choo()
 app.use(devtools())
 app.use(dataStore)
 app.route('/', mainView)
-app.route('/COVID-19-geographical-animations-js/', mainView)
+app.route('/COVID-19-geographical-animations-js', mainView)
 app.mount('body')
 
 function mainView (state, emit) {
