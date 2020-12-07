@@ -15,7 +15,7 @@ app.route('/COVID-19-geographical-animations-js', mainView)
 app.mount('body')
 
 function mainView (state, emit) {
-  return html`<body class="w-100 h-100 flex flex-column helvetica pa4 dark-gray">
+  return html`<body class="w-100 h-100 flex flex-column lato pa0 dark-gray">
 
 
         ${state.cache(Mapbox, `test-map`).render({
@@ -23,10 +23,10 @@ function mainView (state, emit) {
           fill: state.map.fill,
           radius: state.map.radius
     }, emit)}
-    <div class="flex flex-column justify-between">
+    <div class="flex flex-column justify-between pb3 ph3">
       <div>${timeline(state, emit)}</div>
       <div class="w-100 pa2 f6">
-      <h4> COVID-19 geographical animation</h4>
+      <h4 class="b dark-gray f5"> COVID-19 geographical animation</h4>
       <p>Web version of <a href="https://github.com/hsayama/COVID-19-geographical-animations">Mathematica animations</a> by Hiroki Sayama.</p>
       The size of each disc represents the number of daily new positive cases (scaled). The color of the disc is determined by (# of daily new cases) / (max # of daily new cases observed up to that point), which ranges from 0 (end of epidemic; blue) to 1 (growing or peak of epidemic; red).
       Data was smoothed using seven-day moving averages.

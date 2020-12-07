@@ -96,7 +96,9 @@ function incrementDate() {
   emitter.emit('render')
 }
 
-const colorScale = d3.scaleSequential([1, 0], d3.interpolateRdYlBu)
+//const colorScale = d3.scaleSequential([1, 0], d3.interpolateRdYlBu)
+
+const colorScale = d3.scaleLinear().domain([0, 1]).range(['blue', 'red'])
 const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
   function setMapData() {
     var fillExpression = ['match', ['get', 'id']]
@@ -110,6 +112,8 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
     //  console.log(val, color)
       fillExpression.push(index, color)
       radiusExpression.push(index, radius)
+
+      console.log(color, val)
     })
 
       fillExpression.push(`rgba(0, 255, 0, 1)`)
@@ -142,6 +146,7 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
       emitter.emit('render')
     })
 
+    const num = new Intl.NumberFormat()
     function setTooltip(data) {
     if(state.data !== null) {
 
@@ -150,9 +155,9 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
       const d = state.data[key]
       state.ui.tooltip.content = html`
       <div class="f7">
-        <div>${key}</div>
-        <div>new cases: ${Math.round(d.newcases[state.dataset.dateIndex])}</div>
-        <div>total cases: ${d.totalcases[state.dataset.dateIndex]}</div>
+        <div class="f6 b pb2">${key}</div>
+        <div class="pv0"><div class="w3 dib">new cases:</div> ${num.format(Math.round(d.newcases[state.dataset.dateIndex]))}</div>
+        <div class="pv0"><div class="w3 dib">total cases:</div> ${num.format(d.totalcases[state.dataset.dateIndex])}</div>
       </div>
       `
       state.ui.tooltip.data = data
