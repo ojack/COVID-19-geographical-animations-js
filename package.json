@@ -1,6 +1,6 @@
 {
   "name": "covid-19-geographical-animations",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "web version of https://github.com/hsayama/COVID-19-geographical-animations by hiroki sayama",
   "main": "index.js",
   "scripts": {
