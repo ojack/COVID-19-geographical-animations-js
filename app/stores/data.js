@@ -39,7 +39,7 @@ module.exports = (state, emitter) => {
     },
     onDone: (assets) => {
       const { dataByRegion, dates } = csv(assets.data)
-      console.log(dataByRegion)
+  //    console.log(dataByRegion)
       state.data = dataByRegion
       state.dataset.dates = dates
       startPlaying()
@@ -60,7 +60,7 @@ module.exports = (state, emitter) => {
 emitter.on('startPlaying', () => {
   state.ui.timeline.isPlaying = true
   startPlaying()
-  console.log(state.ui.timeline.isPlaying)
+//  console.log(state.ui.timeline.isPlaying)
   emitter.emit('render')
 })
 
@@ -113,7 +113,7 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
       fillExpression.push(index, color)
       radiusExpression.push(index, radius)
 
-      console.log(color, val)
+  //    console.log(color, val)
     })
 
       fillExpression.push(`rgba(0, 255, 0, 1)`)
@@ -151,7 +151,7 @@ const radiusScale = d3.scaleSqrt([0, 10000], [1, 40])
     if(state.data !== null) {
 
       const key = Object.keys(state.data)[data.id]
-      console.log(data.id, key)
+  //    console.log(data.id, key)
       const d = state.data[key]
       state.ui.tooltip.content = html`
       <div class="f7">

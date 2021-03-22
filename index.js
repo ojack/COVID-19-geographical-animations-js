@@ -8,7 +8,7 @@ const tooltip = require('./app/components/tooltip.js')
 
 
 const app = choo()
-app.use(devtools())
+// app.use(devtools())
 app.use(dataStore)
 app.route('/', mainView)
 app.route('/COVID-19-geographical-animations-js', mainView)

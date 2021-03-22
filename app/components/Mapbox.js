@@ -16,7 +16,7 @@ module.exports = class Mapbox extends Component {
   }
 
   loadPoints(data) {
-    console.log('loading points')
+  //  console.log('loading points')
     const features = Object.values(data).map((feature, index) => {
       return {
         'type': 'Feature',
@@ -36,7 +36,7 @@ module.exports = class Mapbox extends Component {
         'features': features
       }
 
-    console.log(JSON.stringify(geojson, 2))
+  //  console.log(JSON.stringify(geojson, 2))
   //  console.log(features)
     this.map.addSource('points', {
       'type': 'geojson',
