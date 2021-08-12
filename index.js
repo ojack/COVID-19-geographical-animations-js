@@ -29,11 +29,15 @@ function mainView (state, emit) {
       <div>${timeline(state, emit)}</div>
       <div class="w-100 pa2 f6">
       <h4 class="b dark-gray f5"> COVID-19 geographical animation</h4>
-      <p>Created by <a href="https://rocs.hu-berlin.de/author/olivia-jack/">Olivia Jack</a>. Web version of <a href="https://github.com/hsayama/COVID-19-geographical-animations">Mathematica animations</a> by Hiroki Sayama.</p>
+      
       The size of each disc represents the number of daily new positive cases (scaled). The color of the disc is determined by (# of daily new cases) / (max # of daily new cases observed up to that point), which ranges from 0 (end of epidemic; blue) to 1 (growing or peak of epidemic; red).
       Data was smoothed using seven-day moving averages.
       <p>Data from <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series"> Johns Hopkins University </a>.</p>
-    </div>
+    
+      <p>Created by <a href="https://rocs.hu-berlin.de/author/olivia-jack/">Olivia Jack</a>, <a href="http://rocs.hu-berlin.de/">ROCS (Research on Complex Systems)</a>, Department of Biology, Humboldt University of Berlin
+      .</p>
+      <p> Web version of <a href="https://github.com/hsayama/COVID-19-geographical-animations">Mathematica animations</a> by Hiroki Sayama.</p>
+      </div>
   </div>
       ${tooltip(state.ui.tooltip, emit)}
   </body>`
